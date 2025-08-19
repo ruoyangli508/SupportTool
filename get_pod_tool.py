@@ -19,7 +19,7 @@ def choose_file():
     return file_path
 
 
-def call_api_with_retry(trk_list, max_retries=3, delay=2):
+def call_api_with_retry(trk_list, max_retries=3, delay=2): 
     """
     Call POD API with retry mechanism
     """
@@ -149,7 +149,6 @@ def main():
         print(f"An unexpected error occurred: {e}")
 
     input("Press Enter to exit (o´ω`o)ﾉ ")
-
 
 
 
