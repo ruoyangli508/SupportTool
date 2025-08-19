@@ -42,7 +42,7 @@ jobs:
           cd dist_artifact
           zip -r SupportTool-mac.zip SupportTool.app
 
-      # 6️⃣ 上传 artifact（v4）
+      # 6️⃣ 上传 artifact（使用最新 v4）
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
