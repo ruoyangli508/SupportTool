@@ -1,0 +1,49 @@
+name: Build macOS App
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # 可以手动触发
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      # 1. 拉取代码
+      - uses: actions/checkout@v3
+
+      # 2. 设置 Python 环境
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      # 3. 安装依赖
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      # 4. 打包为 macOS app
+      - name: Build .app
+        run: |
+          pyinstaller --onefile --windowed --name "MyApp" main.py
+          # 如果你有图标
+          # pyinstaller --onefile --windowed --name "MyApp" --icon icon.icns main.py
+
+      # 5. 打包输出为 zip
+      - name: Archive .app
+        run: |
+          mkdir -p dist_artifact
+          cp -R dist/MyApp.app dist_artifact/
+          cd dist_artifact
+          zip -r MyApp-mac.zip MyApp.app
+
+      # 6. 上传构建产物
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: MyApp-mac
+          path: dist_artifact/MyApp-mac.zip
